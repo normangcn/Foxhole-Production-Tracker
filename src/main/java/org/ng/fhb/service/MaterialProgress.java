@@ -1,4 +1,4 @@
-package org.ng.fhb;
+package org.ng.fhb.service;
 import java.util.HashMap;
 import java.util.Map;
 

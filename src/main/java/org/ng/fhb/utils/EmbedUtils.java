@@ -1,4 +1,4 @@
-package org.ng.fhb;
+package org.ng.fhb.utils;
 
     public class EmbedUtils {
         public static String generateProgressBar(int percentage) {

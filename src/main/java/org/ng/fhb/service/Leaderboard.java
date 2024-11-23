@@ -1,6 +1,4 @@
-package org.ng.fhb;
-import java.util.HashMap;
-import org.ng.fhb.FoxholeBot.*;
+package org.ng.fhb.service;
 import java.util.HashMap;
 import java.util.Map;
 
