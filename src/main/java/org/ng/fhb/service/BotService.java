@@ -12,21 +12,21 @@ public class BotService {
         this.jsonManager = jsonManager;
     }
 
-    public void updateContribution(String user, String material, int amount) {
-        BotSupplyData data = jsonManager.getData();
-
-        // Update contribution
-        data.getContributions()
-                .computeIfAbsent(user, k -> new HashMap<>())
-                .merge(material, amount, Integer::sum);
-
-        // Save updated data
-        jsonManager.saveData();
-    }
+//    public void updateContribution(String user, String material, int amount) {
+//        BotSupplyData data = jsonManager.getData();
+//
+//        // Update contribution
+//        data.getContributions()
+//                .computeIfAbsent(user, k -> new HashMap<>())
+//                .merge(material, amount, Integer::sum);
+//
+//        // Save updated data
+//        jsonManager.saveData();
+//    }
 
     public void displayProgress() {
         BotSupplyData data = jsonManager.getData();
-        System.out.println("Targets: " + data.getTargets());
+        System.out.println("Targets: " + data.getTarget());
         System.out.println("Contributions: " + data.getContributions());
     }
 }
