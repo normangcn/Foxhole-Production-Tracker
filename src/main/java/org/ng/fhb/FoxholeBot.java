@@ -6,7 +6,7 @@ public class FoxholeBot {
 
                 public static void main(String[] args) {
                     // Ensure you have your bot token set correctly
-                    String botToken = "MTMwOTE3MDkyMzY5MzE1MDMyOA.G-dHUI.P23LHefXT1ii83Dx_8c-FnRCly3rY_MiVl0J54";  //bot token
+                    String botToken = "MyToken";  //bot token
 
                     try {
                         // Build the JDABuilder and set the event listener

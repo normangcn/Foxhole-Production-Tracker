@@ -7,13 +7,19 @@ import org.ng.fhb.model.BotSupplyData;
 import org.ng.fhb.repository.JsonRepo;
 import org.ng.fhb.utils.DateTimeUtils;
 import org.ng.fhb.utils.EmbedUtils;
+import org.ng.fhb.utils.StringsUtils;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class FoxholeBotListener extends ListenerAdapter {
     public JsonRepo jsonRepo= new JsonRepo();
     public BotService currentStock = new BotService(jsonRepo);
     public String testString = "testString";
-    public int currentProgress = 0;
-    public int target = 0;
+
     // This method handles the message event and will be triggered on each received message.
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
@@ -31,12 +37,26 @@ public class FoxholeBotListener extends ListenerAdapter {
         } else if (args[0].equalsIgnoreCase("!showprogress")) {
             sendProgressEmbed(event, currentStock);
 
-    } else if (args[0].equalsIgnoreCase("!setTarget")) {
-            String material = args[1];
-            int target = Integer.parseInt(args[2]);
-            onSetTargetCommand(event, testString, target);
-        } else if (args[0].equalsIgnoreCase("!leaderboard")) {
-            displayLeaderboard(event);
+        } else if (message.startsWith("!setTarget")) {
+            // Parse the arguments considering quoted strings
+            List<String> arguments = StringsUtils.parseArguments(message);
+
+            // Ensure there are at least two arguments
+            if (arguments.size() < 3) {
+                event.getChannel().sendMessage("Usage: !setTarget <item> <target>").queue();
+                return;
+            }
+
+            try {
+                // Extract the item and target
+                String item = arguments.get(1); // The item name
+                int target = Integer.parseInt(arguments.get(2)); // The target value
+
+                // Call the command logic
+                onSetTargetCommand(event, item, target);
+            } catch (NumberFormatException e) {
+                event.getChannel().sendMessage("The target must be a valid number.").queue();
+            }
         }
     }
 
@@ -102,20 +122,38 @@ public class FoxholeBotListener extends ListenerAdapter {
 //
 //        event.getChannel().sendMessage(progressMessage.toString()).queue();
 //    }
-    public void onSetTargetCommand(MessageReceivedEvent event, String item, int target) {
-        JsonRepo jsonRepo = new JsonRepo();
-        BotSupplyData data = jsonRepo.getData();
+public void onSetTargetCommand(MessageReceivedEvent event, String item, int target) {
+    // Check if the user has the required role
+    if (!isUserAuthorized(event)) {
+        event.getChannel().sendMessage("You do not have permission to set targets.").queue();
+        return;
+    }
 
-        BotSupplyData.ItemData itemData = data.getItems().get(item);
-        if (itemData == null) {
-            event.getChannel().sendMessage("Item not found: " + item).queue();
-            return;
-        }
+    // Retrieve the current data from the repository
+    BotSupplyData data = jsonRepo.getData();
 
-        itemData.setTarget(target);
-        jsonRepo.saveData();
+    // Check if the item exists
+    BotSupplyData.ItemData itemData = data.getItems().get(item);
+    if (itemData == null) {
+        event.getChannel().sendMessage("Item not found: " + item).queue();
+        return;
+    }
 
-        event.getChannel().sendMessage(String.format("Set target for %s: %d", item, target)).queue();
+    // Update the target value for the item
+    itemData.setTarget(target);
+    jsonRepo.saveData();
+
+    // Provide confirmation to the user
+    event.getChannel().sendMessage(String.format("Set target for %s to %d.", item, target)).queue();
+}
+
+    private boolean isUserAuthorized(MessageReceivedEvent event) {
+        // Define the required roles (e.g., "Admin" or "Officer")
+        List<String> authorizedRoles = Arrays.asList("Admin", "Officer");
+
+        // Check if the user has any of the required roles
+        return event.getMember().getRoles().stream()
+                .anyMatch(role -> authorizedRoles.contains(role.getName()));
     }
     private void displayLeaderboard(MessageReceivedEvent event) {
         BotSupplyData data = jsonRepo.getData();
