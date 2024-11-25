@@ -26,7 +26,5 @@ public class BotService {
 
     public void displayProgress() {
         BotSupplyData data = jsonManager.getData();
-        System.out.println("Targets: " + data.getTarget());
-        System.out.println("Contributions: " + data.getContributions());
     }
 }

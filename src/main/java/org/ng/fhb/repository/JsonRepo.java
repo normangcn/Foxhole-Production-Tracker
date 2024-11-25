@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 public class JsonRepo {
-    private static final String FILE_PATH = "data.json";
+    private static final String FILE_PATH = "src/main/resources/data.json";
     BotSupplyData botSupplyData = new BotSupplyData();
     private BotSupplyData data;
     private final ObjectMapper mapper = new ObjectMapper();

@@ -5,16 +5,15 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.EmbedBuilder;
 import org.ng.fhb.model.BotSupplyData;
 import org.ng.fhb.repository.JsonRepo;
+import org.ng.fhb.utils.DateTimeUtils;
 import org.ng.fhb.utils.EmbedUtils;
-
-import java.util.HashMap;
 
 public class FoxholeBotListener extends ListenerAdapter {
     public JsonRepo jsonRepo= new JsonRepo();
-    String testString = "Concrete Materials";
-    int currentQT = 50;
-    int targetQT = 100;
-
+    public BotService currentStock = new BotService(jsonRepo);
+    public String testString = "testString";
+    public int currentProgress = 0;
+    public int target = 0;
     // This method handles the message event and will be triggered on each received message.
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
@@ -27,10 +26,10 @@ public class FoxholeBotListener extends ListenerAdapter {
             String material = args[1];
             int amount = Integer.parseInt(args[2]);
             onUpdateContributionCommand(event, user, testString, amount);
-        } else if (args[0].equalsIgnoreCase("!displayProgress")) {
-            onDisplayProgressCommand(event);
+//        } else if (args[0].equalsIgnoreCase("!displayProgress")) {
+//            onDisplayProgressCommand(event);
         } else if (args[0].equalsIgnoreCase("!showprogress")) {
-            sendProgressEmbed(event, testString, currentQT, targetQT);
+            sendProgressEmbed(event, currentStock);
 
     } else if (args[0].equalsIgnoreCase("!setTarget")) {
             String material = args[1];
@@ -42,17 +41,32 @@ public class FoxholeBotListener extends ListenerAdapter {
     }
 
     // This method sends an embed with the progress of the material
-    private void sendProgressEmbed(MessageReceivedEvent event, String material, int currentProgress, int target) {
+    private void sendProgressEmbed(MessageReceivedEvent event, BotService currentStock) {
         EmbedBuilder embed = new EmbedBuilder();
-        embed.setTitle("Progress for " + material);
+        DateTimeUtils dateTimeUtils = new DateTimeUtils();
+        embed.setTitle("Progress for " + dateTimeUtils.formatDateTimeToNow());
         embed.setColor(0x1F8B4C); // Green color
+        BotSupplyData data = jsonRepo.getData();
 
-        // Calculate progress percentage
-        int progressPercentage = (int) ((double) currentProgress / target * 100);
-        String progressBar = EmbedUtils.generateProgressBar(progressPercentage);  // Assuming EmbedUtils has this method
+        StringBuilder description = new StringBuilder();
+        data.getItems().forEach((item, itemData) -> {
+            // Calculate progress percentage
+            int progressPercentage = (int) ((double) itemData.getQuantity() / itemData.getTarget() * 100);
+            String progressBar = EmbedUtils.generateProgressBar(progressPercentage);
+            // Append progress info for this item with progress bar on the right
+            description.append(item)
+                    .append(" [")
+                    .append(progressPercentage)
+                    .append("%]: ")
+                    .append(progressBar)
+                    .append(" (")
+                    .append(itemData.getQuantity())
+                    .append("/")
+                    .append(itemData.getTarget())
+                    .append(")\n");
+        });
 
-        // Add description with progress and the progress bar
-        embed.setDescription("**Progress:** " + currentProgress + "/" + target + " (" + progressPercentage + "%)\n" + progressBar);
+        embed.setDescription(description.toString());
         embed.setFooter("Requested by " + event.getAuthor().getName(), event.getAuthor().getAvatarUrl());
 
         // Send the embed to the channel where the command was triggered
@@ -75,18 +89,19 @@ public class FoxholeBotListener extends ListenerAdapter {
         event.getChannel().sendMessage(String.format("Updated %s: +%d (New total: %d/%d)",
                 item, amount, itemData.getQuantity(), itemData.getTarget())).queue();
     }
-    public void onDisplayProgressCommand(MessageReceivedEvent event) {
-        JsonRepo jsonRepo = new JsonRepo();
-        BotSupplyData data = jsonRepo.getData();
-
-        StringBuilder progressMessage = new StringBuilder("**Production Progress:**\n");
-        data.getItems().forEach((item, itemData) -> {
-            progressMessage.append(String.format("%s: %d/%d\n",
-                    item, itemData.getQuantity(), itemData.getTarget()));
-        });
-
-        event.getChannel().sendMessage(progressMessage.toString()).queue();
-    }
+//    public void onDisplayProgressCommand(MessageReceivedEvent event) {
+//
+//        JsonRepo jsonRepo = new JsonRepo();
+//        BotSupplyData data = jsonRepo.getData();
+//
+//        //StringBuilder progressMessage = new StringBuilder("**Production Progress:**\n");
+//        data.getItems().forEach((item, itemData) -> {
+//            progressMessage.append(String.format("%s: %d/%d\n",
+//                    item, itemData.getQuantity(), itemData.getTarget()));
+//        });
+//
+//        event.getChannel().sendMessage(progressMessage.toString()).queue();
+//    }
     public void onSetTargetCommand(MessageReceivedEvent event, String item, int target) {
         JsonRepo jsonRepo = new JsonRepo();
         BotSupplyData data = jsonRepo.getData();

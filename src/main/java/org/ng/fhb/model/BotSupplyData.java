@@ -5,7 +5,6 @@ import java.util.Map;
 
     public class BotSupplyData {
         private Map<String, ItemData> items;
-        private int target;
         public Map<String, ItemData> getItems() {
             return items;
         }
@@ -19,13 +18,8 @@ import java.util.Map;
             return contributions;
         }
 
-        public int getTarget() {
-            return target;
-        }
 
-        public void setTargets(int target) {
-            this.target = target;
-        }
+
 
         public static class ItemData {
             private int quantity;
