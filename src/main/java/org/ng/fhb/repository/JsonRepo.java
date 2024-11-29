@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 public class JsonRepo {
-    private static final String FILE_PATH = "src/main/resources/data.json";
+    private static final String FILE_PATH = System.getProperty("data.file.path", "data.json");
     BotSupplyData botSupplyData = new BotSupplyData();
     private BotSupplyData data;
     private final ObjectMapper mapper = new ObjectMapper();
@@ -21,10 +21,7 @@ public class JsonRepo {
                 // Deserialize JSON into BotSupplyData
                 data = mapper.readValue(file, BotSupplyData.class);
             } else {
-                // Initialize new data if the file doesn't exist
-                data = new BotSupplyData();
-                data.setItems(new HashMap<>()); // Initialize empty items map
-                saveData(); // Save initial structure
+                System.out.println("Json file doesn't exist");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -39,7 +36,10 @@ public class JsonRepo {
         try {
             mapper.writerWithDefaultPrettyPrinter().writeValue(new File(FILE_PATH), data);
         } catch (IOException e) {
+            System.err.println("Failed to save data to JSON file.");
             e.printStackTrace();
+            // Optionally, throw a custom exception
+            throw new RuntimeException("Error saving data", e);
         }
     }
 }

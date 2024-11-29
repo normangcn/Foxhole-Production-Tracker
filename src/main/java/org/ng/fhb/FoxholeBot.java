@@ -1,20 +1,20 @@
 package org.ng.fhb;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.ng.fhb.service.FoxholeBotListener;
 
 public class FoxholeBot {
 
                 public static void main(String[] args) {
-                    // Ensure you have your bot token set correctly
-                    String botToken = "MyToken";  //bot token
+                    String botToken ="empty";  //bot token
 
                     try {
                         // Build the JDABuilder and set the event listener
-                        JDABuilder builder = JDABuilder.createDefault(botToken);
+                        JDABuilder builder = JDABuilder.createDefault(botToken, GatewayIntent.GUILD_MESSAGES, GatewayIntent.MESSAGE_CONTENT, GatewayIntent.GUILD_MEMBERS);
                         builder.addEventListeners(new FoxholeBotListener());  // Register the listener
                         builder.build();  // Connect the bot to Discord
                     } catch (Exception e) {
-                        e.printStackTrace();  // Handle any errors during bot initialization
+                        e.printStackTrace();
                     }
                 }
             }

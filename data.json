@@ -1,0 +1,149 @@
+{
+  "items" : {
+    "Salvage" : {
+      "quantity" : 0,
+      "target" : 1000
+    },
+    "Components" : {
+      "quantity" : 0,
+      "target" : 800
+    },
+    "Sulfur" : {
+      "quantity" : 0,
+      "target" : 500
+    },
+    "Coal" : {
+      "quantity" : 0,
+      "target" : 400
+    },
+    "Oil" : {
+      "quantity" : 0,
+      "target" : 300
+    },
+    "HeavyOil" : {
+      "quantity" : 0,
+      "target" : 200
+    },
+    "EnrichedOil" : {
+      "quantity" : 0,
+      "target" : 200
+    },
+    "Petrol" : {
+      "quantity" : 0,
+      "target" : 300
+    },
+    "Diesel" : {
+      "quantity" : 0,
+      "target" : 400
+    },
+    "Bmats" : {
+      "quantity" : 300,
+      "target" : 2000
+    },
+    "Rmats" : {
+      "quantity" : 0,
+      "target" : 500
+    },
+    "Cmats" : {
+      "quantity" : 0,
+      "target" : 300
+    },
+    "Emats" : {
+      "quantity" : 0,
+      "target" : 200
+    },
+    "HEmats" : {
+      "quantity" : 0,
+      "target" : 200
+    },
+    "MSupps" : {
+      "quantity" : 0,
+      "target" : 400
+    },
+    "Shirts" : {
+      "quantity" : 0,
+      "target" : 600
+    },
+    "9mm" : {
+      "quantity" : 0,
+      "target" : 1000
+    },
+    "7.92mm" : {
+      "quantity" : 0,
+      "target" : 500
+    },
+    "7.62mm" : {
+      "quantity" : 0,
+      "target" : 500
+    },
+    ".44" : {
+      "quantity" : 0,
+      "target" : 500
+    },
+    "Buckshot" : {
+      "quantity" : 0,
+      "target" : 500
+    },
+    "Flame Ammo" : {
+      "quantity" : 0,
+      "target" : 500
+    },
+    "12.7mm" : {
+      "quantity" : 0,
+      "target" : 200
+    },
+    "20mm" : {
+      "quantity" : 0,
+      "target" : 300
+    },
+    "30mm" : {
+      "quantity" : 0,
+      "target" : 100
+    },
+    "40mm" : {
+      "quantity" : 0,
+      "target" : 300
+    },
+    "68mm" : {
+      "quantity" : 0,
+      "target" : 150
+    },
+    "75mm" : {
+      "quantity" : 0,
+      "target" : 100
+    },
+    "94.5mm" : {
+      "quantity" : 0,
+      "target" : 200
+    },
+    "120mm" : {
+      "quantity" : 0,
+      "target" : 5
+    },
+    "150mm" : {
+      "quantity" : 0,
+      "target" : 2
+    },
+    "250mm" : {
+      "quantity" : 0,
+      "target" : 3
+    },
+    "300mm" : {
+      "quantity" : 0,
+      "target" : 50
+    },
+    "Shovels" : {
+      "quantity" : 0,
+      "target" : 40
+    },
+    "Radios" : {
+      "quantity" : 0,
+      "target" : 20
+    },
+    "GasMasks" : {
+      "quantity" : 0,
+      "target" : 30
+    }
+  },
+  "contributions" : { }
+}
